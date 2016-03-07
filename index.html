@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>PONG</title>
+	</head>
+
+	<body>
+
+		<script src="https://github.com/downloads/processing-js/processing-js/processing-1.4.1.min.js"></script>
+
+		<script type="text/processing" data-processing-target="targetcanvas">
+
+			void setup() {
+
+				size(400, 400);
+
+			}
+
+			var y = 0;
+			var wy = 0;
+			var ex = 200;
+			var ey = 43;
+			var nx = 3;
+			var ny = 1.5;
+			var bounceCount = 0;
+			var speedCount = 0;
+			var width = 70;
+
+
+void draw() {
+
+			background(255, 255, 255);
+
+			//right paddle creation
+			fill(165,10,10);
+			rect(389, y, 10, width);
+
+			//left paddle creation
+			fill(165,10,10);
+			rect(0, wy, 10, width);
+
+			//data box
+			fill(0,0,0);
+			rect(0, 0, 400, 20);
+			fill(255, 255, 255);
+			text("Score: " + bounceCount, 300, 15);
+			/*text(ex, 20, 15);
+			text(ey, 80, 15);
+			text(wy, 130, 15);
+			text(y, 145, 15);
+			text(nx, 180, 15);
+			text(ny, 210, 15);*/
+
+			//ball creation
+			fill(245.25,0,0);
+			ellipse(ex, ey,25,25);
+
+			//ball animation
+			ex = ex + nx;
+			ey = ey + ny;
+
+
+			//moving the right paddlex
+			if (keyPressed && keyCode == DOWN){
+					y += 5;
+				}else if (keyPressed && keyCode == UP){
+					y += -5;
+				}else if (y <= 0){
+				 	y=0;
+				}else if (y >= 329){
+					y=329;
+				}
+
+			//moving the left paddle
+
+			if (keyPressed && key.code == 's'){
+						wy += 5;
+				}else if (keyPressed && key.code == 'w'){
+						wy += -5;
+				}else if (wy <= 0){
+						wy=0;
+				}else if (wy >= 329){
+						wy=329;
+				}
+
+       	//paddle check right
+			if(ex > 375 && ey > y && ey < y+width){
+					ex = 370
+					nx = -nx;
+					bounceCount += 1;
+
+					//paddle check left
+			}else if(ex < 23 && ey > wy && ey < wy+width){
+					ex = 30;
+					nx = -nx;
+					bounceCount += 1;
+				}
+
+
+			//top bounce for ball
+			if(ey <= 30){
+					ey = 40
+					ny = -ny;
+
+				//bottom bounce for ball
+			}else if(ey >= 400){
+					ey = 390;
+					ny = -ny;
+
+			}else if(ex >= 400 || ex <= 0){
+
+					ex = 200;
+					ey = 43;
+					nx =0;
+					ny =0;
+				}
+				if(nx==0 && ny==0){
+
+					fill(0,0,0);
+					text("You Failed!", 150,150);
+					text("Score: " + bounceCount, 160, 165);
+					text("Press the space bar to start over", 100, 200);
+
+}
+				if(keyPressed && key.code == ' '){
+						ex = 200;
+						ey = 43;
+						bounceCount = 0;
+						nx = 3;
+						ny = 1.5;
+					}
+
+
+			//speed up
+			if(bounceCount % 4 == 0 && bounceCount != 0 && nx <= 8 && ny <= 4){
+					if(ex <= 30 || ex >= 375){
+						nx *= 1.1;
+						ny *= 1.1;
+						speedCount += 1;
+				}
+			}
+
+			//paddle shrinkage
+			if(bounceCount % 8 == 0 && bounceCount != 0){
+					if(ex <= 30 || ex >= 375){
+						width -= 5;
+					}
+			}
+};
+
+		</script>
+
+		<canvas id="targetcanvas"></canvas>
+
+	 	<p>This can be any text that I want here</p>
+	</body>
+</html>
